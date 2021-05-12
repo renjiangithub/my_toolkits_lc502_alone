@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CAddLC502Dialog</class>
+ <widget class="QDialog" name="CAddLC502Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>481</width>
+    <height>283</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>461</width>
+     <height>237</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel
+{
+color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="text">
+       <string>设备名称：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="add_name_lineEdit">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit
+{
+	font-family:&quot;微软雅黑&quot;;
+	color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="maxLength">
+       <number>12</number>
+      </property>
+      <property name="placeholderText">
+       <string>不超过12个字符</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel
+{
+color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="text">
+       <string>IP  地  址：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="add_ip_lineEdit">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit
+{
+	font-family:&quot;微软雅黑&quot;;
+	color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel
+{
+color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="text">
+       <string>子网掩码：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="add_mask_lineEdit">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit
+{
+	font-family:&quot;微软雅黑&quot;;
+	color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel
+{
+color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="text">
+       <string>默认网关：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="add_gateway_lineEdit">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit
+{
+	font-family:&quot;微软雅黑&quot;;
+	color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="maxLength">
+       <number>16</number>
+      </property>
+      <property name="placeholderText">
+       <string>16位字节长度，数字和大写字母输入</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel
+{
+color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="text">
+       <string>UDP端口：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="add_udpPort_lineEdit">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit
+{
+	font-family:&quot;微软雅黑&quot;;
+	color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="maxLength">
+       <number>16</number>
+      </property>
+      <property name="placeholderText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel
+{
+color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="text">
+       <string>登录用户：</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="add_loginUser_lineEdit">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit
+{
+	font-family:&quot;微软雅黑&quot;;
+	color: &quot;#2e4a66&quot;;
+}</string>
+      </property>
+      <property name="maxLength">
+       <number>16</number>
+      </property>
+      <property name="placeholderText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QPushButton" name="add_ok_pushButton">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+
+        border-radius: 2px;
+
+        border: none;
+
+        width: 75px;
+
+        height: 25px;
+        background-color:rgb(0,0,0,0);
+
+}
+
+QPushButton:enabled {
+
+        background: rgb(120, 170, 220);
+
+        color: white;
+
+}
+
+QPushButton:!enabled {
+
+        background: rgb(180, 180, 180);
+
+        color: white;
+
+}
+
+QPushButton:enabled:hover{
+
+        background: rgb(100, 160, 220);
+
+}
+
+QPushButton:enabled:pressed{
+
+        background: rgb(0, 78, 161);
+
+}
+
+ 
+
+QPushButton#blueButton {
+
+        color: white;
+
+}
+
+QPushButton#blueButton:enabled {
+
+        background: rgb(0, 78, 161);
+
+        color: white;
+
+}
+
+QPushButton:!enabled {
+
+        background: rgb(180, 180, 180);
+
+        color: white;
+
+}
+
+QPushButton#blueButton:enabled:hover {
+
+        background: rgb(2, 65, 132);
+
+}
+
+QPushButton#blueButton:enabled:pressed {
+
+        background: rgb(6, 94, 187);
+
+}</string>
+      </property>
+      <property name="text">
+       <string>确定</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>128</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="6" column="2">
+     <widget class="QPushButton" name="add_cancel_pushButton">
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+
+        border-radius: 2px;
+
+        border: none;
+
+        width: 75px;
+
+        height: 25px;
+        background-color:rgb(0,0,0,0);
+
+}
+
+QPushButton:enabled {
+
+        background: rgb(120, 170, 220);
+
+        color: white;
+
+}
+
+QPushButton:!enabled {
+
+        background: rgb(180, 180, 180);
+
+        color: white;
+
+}
+
+QPushButton:enabled:hover{
+
+        background: rgb(100, 160, 220);
+
+}
+
+QPushButton:enabled:pressed{
+
+        background: rgb(0, 78, 161);
+
+}
+
+ 
+
+QPushButton#blueButton {
+
+        color: white;
+
+}
+
+QPushButton#blueButton:enabled {
+
+        background: rgb(0, 78, 161);
+
+        color: white;
+
+}
+
+QPushButton:!enabled {
+
+        background: rgb(180, 180, 180);
+
+        color: white;
+
+}
+
+QPushButton#blueButton:enabled:hover {
+
+        background: rgb(2, 65, 132);
+
+}
+
+QPushButton#blueButton:enabled:pressed {
+
+        background: rgb(6, 94, 187);
+
+}</string>
+      </property>
+      <property name="text">
+       <string>取消</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

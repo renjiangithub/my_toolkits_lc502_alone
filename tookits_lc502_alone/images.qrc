@@ -1,0 +1,50 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/add.ico</file>
+        <file>images/bt_control.png</file>
+        <file>images/bt_controlN.png</file>
+        <file>images/bt_date.png</file>
+        <file>images/bt_dateN.png</file>
+        <file>images/bt_led.png</file>
+        <file>images/bt_ledN.png</file>
+        <file>images/clear.png</file>
+        <file>images/clear_data.png</file>
+        <file>images/comm_abnormal.ico</file>
+        <file>images/comm_abnormal.png</file>
+        <file>images/comm_nomarl.ico</file>
+        <file>images/comm_nomarl.png</file>
+        <file>images/delete.ico</file>
+        <file>images/delete-fill.png</file>
+        <file>images/double right.png</file>
+        <file>images/down.png</file>
+        <file>images/download.png</file>
+        <file>images/edit.png</file>
+        <file>images/help.png</file>
+        <file>images/icon_add.png</file>
+        <file>images/icon_choose.png</file>
+        <file>images/icon_close.png</file>
+        <file>images/icon_debug.png</file>
+        <file>images/icon_delete.png</file>
+        <file>images/icon_down.png</file>
+        <file>images/icon_drop-down.png</file>
+        <file>images/icon_global.png</file>
+        <file>images/icon_home.png</file>
+        <file>images/icon_information.png</file>
+        <file>images/icon_nochoose.png</file>
+        <file>images/icon_set.png</file>
+        <file>images/icon_up.png</file>
+        <file>images/icon-logo.ico</file>
+        <file>images/import.ico</file>
+        <file>images/logo.png</file>
+        <file>images/outport.ico</file>
+        <file>images/password_off.png</file>
+        <file>images/password_on.png</file>
+        <file>images/plan_run.png</file>
+        <file>images/plus.png</file>
+        <file>images/query.ico</file>
+        <file>images/search.png</file>
+        <file>images/settings.png</file>
+        <file>images/start.png</file>
+        <file>images/up.png</file>
+    </qresource>
+</RCC>
