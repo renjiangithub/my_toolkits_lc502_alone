@@ -13,7 +13,7 @@ public:
     CUdpDataFrame();
     bool IsValidFrame(QString data);
 
-    QByteArray sendUdpDatagram(QByteArray plain_data);    //对传入的明文data进行加密，校验，拼接等，最终返回完整的加密后的数据帧
+    QByteArray getSendUdpDatagram(QByteArray plain_data);    //对传入的明文data进行加密，校验，拼接等，最终返回完整的加密后的数据帧
     QByteArray getUdpDatagram(QByteArray crypt_data);     //对收到的经加密的data进行解密等，最终返回"有效明文"
 
 public:
@@ -21,6 +21,10 @@ public:
     //bool _IsValidIp(QString ip);
 
     void testInitial();//测试用，除了有效数据位之外，其它不清楚的内容，全由0填写
+
+    void SetClientCommand(int command);
+
+
 
 private:
     QByteArray _fill(QByteArray plain_effective_data);   //对有效明文进行填充，使其长度为16的整倍数，满足AES256加密要求
@@ -34,6 +38,8 @@ private:
     QByteArray _getDecryptCode(QByteArray cryptData);   //对“有效明文+填充数据”进行解密得明文
 
     QByteArray _sendUdpDataJoint(); //发送帧数据拼接
+
+    void _print4x4Data(QString type, unsigned char* data);
 public:
     int m_comm_direction; //0: toolkits发送给lc502的数据帧, 1: lc502发送给toolkits的数据帧
     int m_frame_length;
@@ -55,7 +61,12 @@ public:
 
     QByteArray m_tailFlag; //“帧结束符”, 1Byte，LC502项目中固定 0x5A
 
+    QByteArray m_final_send_frame; //“最终发送帧”
+    int m_final_send_frame_length; //“最终发送帧字节长度”
+
     unsigned char *key;
+
+    int m_client_command;
 };
 
 #endif // CUDPDATAFRAME_H

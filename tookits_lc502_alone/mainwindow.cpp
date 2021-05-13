@@ -9,7 +9,7 @@
 #include "mystruct.h"
 #include "lc502controller.h"
 #include "cudpdataframe.h"
-
+#include "command.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,7 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->splitter->setStretchFactor(1,3);
     //ui->splitter->setAutoFillBackground(true);
 
-//     _StartUdpThread();
+    _StartUdpClientThread();
+     _StartUdpThread();
 
 
     _test_CUdpDataFrame();
@@ -428,14 +429,43 @@ void MainWindow::_test_CUdpDataFrame()
 {
     CUdpDataFrame udpframe;
     QByteArray sendPlainData = QByteArray("ABC");
-    QByteArray sendcryData = udpframe.sendUdpDatagram(sendPlainData);
+    QByteArray sendcryData = udpframe.getSendUdpDatagram(sendPlainData);
 
     //暂假通过网络收到了数据帧
     QByteArray recvCryData(sendcryData);
-    _dealReadData(recvCryData);
+//    _dealReadData(recvCryData);
 }
 
 int MainWindow::_dealReadData(CUdpDataFrame data_frame)
+{
+
+}
+
+void MainWindow::_WriteData(int command)
+{
+    int row = ui->lc502_listWidget->currentRow(); //row从0开始
+    qDebug()<<"ui->lc502_listWidget->currentRow(): "<<row<<" command: "<<command;
+    emit WriteDataSig(row,command,m_lc502_controllers_list[row]);
+}
+
+void MainWindow::_SetControlsEnabled(bool is_enabled, int type)
+{
+     ui->tabWidget->setEnabled(is_enabled);
+     if(type != 0){
+         ui->ip_set_action->setEnabled(is_enabled);
+         //根据需要增加
+     }
+
+}
+
+void MainWindow::_StartUdpClientThread()
+{
+        qDebug()<<"MainWindow::_StartUdpClientThread()";
+     connect(this,SIGNAL(WriteDataSig(int, int, CLC502Controller *)),&m_udp_thread,SLOT(OnWriteData(int, int, CLC502Controller *)));
+
+}
+
+void MainWindow::_StopUdpClientThread()
 {
 
 }
@@ -517,4 +547,10 @@ void MainWindow::_OnSendLC502UdpReadData(QVector<CUdpDataFrame> udp_data_frame)
     qDebug()<<"recResult   "<<recResult;
     //ui->label_test_udp_rec->setText(recResult);
     _StopUdpThread();
+}
+using namespace sansi::protocol;
+void MainWindow::on_button_rs485_query_clicked()
+{
+    _WriteData(Command::GET_SERIAL_PORT_PARAMS);
+    _SetControlsEnabled(false);
 }

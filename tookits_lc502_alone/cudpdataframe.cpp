@@ -39,6 +39,11 @@ void CUdpDataFrame::testInitial(){
     ;//0x12345;
 }
 
+void CUdpDataFrame::SetClientCommand(int command)
+{
+    m_client_command = command;
+}
+
 //对有效明文进行填充，使其长度为16的整倍数
 QByteArray CUdpDataFrame::_fill(QByteArray plain_effective_data)
 {
@@ -56,13 +61,13 @@ bool CUdpDataFrame::IsValidFrame(QString data)
     return true;
 }
 
-QByteArray CUdpDataFrame::sendUdpDatagram(QByteArray plain_data)
+QByteArray CUdpDataFrame::getSendUdpDatagram(QByteArray plain_data)
 {
     //第1步：拼接"保密信息密文"
     //TODO:经AES256加密后的“保密信息密文”
     this->m_plain_after_fill = _fill(plain_data); //有效明文+填充数据
 
-    qDebug()<<"m_plain_after_fill.length()："<<m_plain_after_fill.length();
+//    qDebug()<<"m_plain_after_fill.length()："<<m_plain_after_fill.length();
     QByteArray crypt = _getEncryptCode(m_plain_after_fill);
     QByteArray plain = _getDecryptCode(crypt);
 
@@ -104,7 +109,10 @@ QByteArray CUdpDataFrame::sendUdpDatagram(QByteArray plain_data)
     qDebug()<<"完整发送数据帧："<<sendUdpData;
     qDebug()<<"完整发送数据帧："<<sendUdpData.toHex();
 
-    return QByteArray("");
+    this->m_final_send_frame = sendUdpData;
+    this->m_final_send_frame_length = sendUdpData.size();
+
+    return sendUdpData;
 }
 
 QByteArray  CUdpDataFrame::_intToByte(int number)
@@ -184,10 +192,7 @@ QByteArray CUdpDataFrame::_getEncryptCode(QByteArray plainData)
     for(int i=0; i<16; i++)
         plain[i]=plainData.at(i);
 
-    // 加密前，输出明文
-    qDebug() << "加密前的明文：";
-    for(int i=0; i<16; ++i)
-        qDebug()<<plain[i]<< " ";
+    _print4x4Data(QString("加密前的明文："),plain);
 
     Aes aes256(16,key);
 
@@ -195,16 +200,14 @@ QByteArray CUdpDataFrame::_getEncryptCode(QByteArray plainData)
     unsigned char* output = (unsigned char*)malloc(16*sizeof(char));
     memset(output,'0',16);
     aes256.Cipher(plain, output); // encipher 16-bit input
-    qDebug() << "加密后的密文：";
-    for(int i=0; i<16; ++i)
-        qDebug()<<output[i];
+    _print4x4Data(QString("加密后的密文："),output);
 
     //将结果转为QByteArray
     QByteArray res;
     res.resize(16);
     for(int i=0; i<16; ++i)
         res[i]=output[i];
-    qDebug()<<"_getEncryptCode返回的加密后的QByteArray:"<<res;
+//    qDebug()<<"_getEncryptCode返回的加密后的QByteArray:"<<res;
 
     return res;
 }
@@ -212,8 +215,8 @@ QByteArray CUdpDataFrame::_getEncryptCode(QByteArray plainData)
 //对“有效明文+填充数据”进行解密得明文
 QByteArray CUdpDataFrame::_getDecryptCode(QByteArray cryptData)
 {
-    qDebug()<<"传入_getDecryptCode的cryptData:"<<cryptData;
-    qDebug()<<"传入_getDecryptCode的cryptData.toHex():"<<cryptData.toHex();
+//    qDebug()<<"传入_getDecryptCode的cryptData:"<<cryptData;
+//    qDebug()<<"传入_getDecryptCode的cryptData.toHex():"<<cryptData.toHex();
 
     unsigned char* crypt = (unsigned char*)malloc(16*sizeof(char));
     memset(crypt,'0',16);
@@ -222,10 +225,7 @@ QByteArray CUdpDataFrame::_getDecryptCode(QByteArray cryptData)
     for(int i=0; i<16; i++)
         crypt[i]=cryptData.at(i);
 
-    // 解密前，输出密文
-    qDebug() << "解密前的密文：";
-    for(int i=0; i<16; ++i)
-        qDebug()<<crypt[i]<< " ";
+    _print4x4Data(QString("解密前的密文："),crypt);
 
     Aes aes256(16,key);
 
@@ -233,16 +233,14 @@ QByteArray CUdpDataFrame::_getDecryptCode(QByteArray cryptData)
     unsigned char* output = (unsigned char*)malloc(16*sizeof(char));
     memset(output,0,16);
     aes256.InvCipher(crypt, output);    //解密
-    qDebug() << "输出解密后的明文：";
-    for(int i=0; i<16; ++i)
-        qDebug()<<output[i]<< " ";
+    _print4x4Data(QString("解密后的明文："),output);
 
     //将结果转为QByteArray
     QByteArray res;
     res.resize(16);
     for(int i=0; i<16; ++i)
         res[i]=output[i];
-    qDebug()<<"_getDecryptCode返回的解密后的QByteArray:"<<res;
+//    qDebug()<<"_getDecryptCode返回的解密后的QByteArray:"<<res;
 
     return  res;
 }
@@ -259,5 +257,23 @@ QByteArray CUdpDataFrame::_sendUdpDataJoint()
     sendUdpData.append(this->m_tailFlag);   //结束符
 
     return sendUdpData;
+}
+
+void CUdpDataFrame::_print4x4Data(QString type, unsigned char *data)
+{
+    QVector<QVector<unsigned char>> result;
+    for(int i=0; i<16; ){
+        if(i%4==0){
+            QVector<unsigned char> vec;
+            for(int j=0; j<4; j++)
+                vec.push_back(data[i+j]);
+            i+=4;
+            result.push_back(vec);
+        }
+    }
+//    qDebug()<<type;
+    for(int i=0; i<4; i++){
+//        qDebug()<<result[i][0]<<", "<<result[i][1]<<", "<<result[i][2]<<", "<<result[i][3];
+    }
 }
 

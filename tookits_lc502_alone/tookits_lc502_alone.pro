@@ -34,6 +34,7 @@ SOURCES += \
     mainwindow.cpp \
     mystruct.cpp \
     temp.cpp \
+    udpclient.cpp \
     udpthread.cpp
 HEADERS += \
     Common.h \
@@ -49,6 +50,7 @@ HEADERS += \
     mainwindow.h \
     mystruct.h \
     temp.h \
+    udpclient.h \
     udpthread.h
 
 FORMS += \

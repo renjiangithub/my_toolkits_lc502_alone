@@ -30,6 +30,8 @@ private slots:
 
     void _OnDelLc502BtnClicked();
     void _OnEditBtnClicked();
+    void on_button_rs485_query_clicked();
+
 private:
     void _InitMainWindow();
     void _InitDialog();
@@ -53,10 +55,18 @@ private:
 
     int _dealReadData(CUdpDataFrame data_frame);
 
+    void _WriteData(int command);   //下发指令
+    void _ReadData(int command);    //读取反馈
+
+    void _SetControlsEnabled(bool is_enabled,int type = 0);
+
+    void _StartUdpClientThread();
+    void _StopUdpClientThread();
+
 signals:
     void ControllerExsitedSig(bool is_existed);
     void CloseUdpThreadSig();
-
+    void WriteDataSig(int index, int commod_code, CLC502Controller *controller); //发送数据给LC502
 
 private:
     Ui::MainWindow *ui;
