@@ -13,6 +13,14 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+typedef struct register_read_data
+{
+    uint16_t   addr;   //寄存器地址
+    int     status;     //状态码
+    int     length;     //长度
+    QByteArray data;    //数据
+}_register_read_data;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -26,7 +34,7 @@ private slots:
     void _OnLC502ListChanged(bool is_add_item,QString name,QString ip,QString mask,QString gateway, QString port,QString loginName);
     void on_ip_set_action_triggered();
 
-    void _OnSendLC502UdpReadData(QVector<CUdpDataFrame> udp_data_frame);
+    void _OnSendLC502UdpReadData(QByteArray recv_command_code, QByteArray recv_answer_code, QByteArray recv_data_params);
 
     void _OnDelLc502BtnClicked();
     void _OnEditBtnClicked();
@@ -62,7 +70,8 @@ private:
 
     void _StartUdpClientThread();
     void _StopUdpClientThread();
-
+    bool _verify_recv_data(int back_type, QByteArray recv_data);  //检验udp收到的“数据参数”格式是否正确
+    QList<_register_read_data> _parse_register_read_data(QByteArray recv_data);  //解析udp收到的寄存器读操作“数据参数”
 signals:
     void ControllerExsitedSig(bool is_existed);
     void CloseUdpThreadSig();

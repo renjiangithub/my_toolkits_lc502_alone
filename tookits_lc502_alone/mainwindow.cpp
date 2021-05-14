@@ -10,6 +10,8 @@
 #include "lc502controller.h"
 #include "cudpdataframe.h"
 #include "command.h"
+#include "Common.h"
+using namespace sansi::protocol;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -32,10 +34,10 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->splitter->setAutoFillBackground(true);
 
     _StartUdpClientThread();
-     _StartUdpThread();
 
 
-    _test_CUdpDataFrame();
+
+//    _test_CUdpDataFrame();
 
 
 
@@ -405,16 +407,14 @@ bool MainWindow::_IsExistedController(QString ip, int port)
 
 void MainWindow::_StartUdpThread()
 {
-    connect(&m_udp_thread,SIGNAL(SendLC502UdpReadDataSig(QVector<CUdpDataFrame>)),this,SLOT(_OnSendLC502UdpReadData(QVector<CUdpDataFrame>)));
+    qDebug()<<"MainWindow::_StartUdpThread";
+    connect(&m_udp_thread,SIGNAL(SendLC502UdpReadDataSig(QByteArray, QByteArray, QByteArray)),this,SLOT(_OnSendLC502UdpReadData(QByteArray, QByteArray, QByteArray)));
     connect(this,SIGNAL(CloseUdpThreadSig()),&m_udp_thread,SLOT(OnCloseUdpThread()),Qt::QueuedConnection);
 //    connect(&m_udp_thread,SIGNAL(SendLogMsgSig(int,QString)),this,SLOT(_OnShowLogMsg(int,QString)));
 //    connect(&m_udp_thread,SIGNAL(SendUdpSearchErrorSig()),this,SLOT(_OnSendUdpSearchError()));
 
     m_udp_thread.start();
     //ui->lc502_list_label->setText("正在搜索LC600...");
-
-
-
 }
 
 void MainWindow::_StopUdpThread()
@@ -444,7 +444,7 @@ int MainWindow::_dealReadData(CUdpDataFrame data_frame)
 void MainWindow::_WriteData(int command)
 {
     int row = ui->lc502_listWidget->currentRow(); //row从0开始
-    qDebug()<<"ui->lc502_listWidget->currentRow(): "<<row<<" command: "<<command;
+//    qDebug()<<"ui->lc502_listWidget->currentRow(): "<<row<<" command: "<<command;
     emit WriteDataSig(row,command,m_lc502_controllers_list[row]);
 }
 
@@ -468,6 +468,13 @@ void MainWindow::_StartUdpClientThread()
 void MainWindow::_StopUdpClientThread()
 {
 
+}
+
+//检验udp收到的数据参数格式是否正确
+bool MainWindow::_verify_recv_data(int back_type, QByteArray recv_data)
+{
+    //TODO后期考虑增加对收到帧长度的检查，根据命令码的不同而不同
+    return true;
 }
 
 void MainWindow::_OnDelLc502BtnClicked()
@@ -537,20 +544,106 @@ void MainWindow::on_ip_set_action_triggered()
     //qDebug()<<"on_ip_set_action_triggered";
 }
 
-void MainWindow::_OnSendLC502UdpReadData(QVector<CUdpDataFrame> udp_data_frame)
+void MainWindow::_OnSendLC502UdpReadData(QByteArray recv_command_code, QByteArray recv_answer_code, QByteArray recv_data_params)
 {
-    QString recResult;
-    for(int i = 0; i < udp_data_frame.size(); i++)
-    {
-//        recResult = QString("%1").arg(udp_data_frame[i].m_headFlag);
+    //0.转换命令码和应答码格式
+    int to_type = recv_command_code.toHex().toInt();
+    int back_type = recv_answer_code.toHex().toInt();
+    qDebug()<<"to_type: "<<to_type;
+    qDebug()<<"back_type: "<<back_type;
+
+    switch(to_type){
+    case BACK_AUTHORIZE_BACK:{  //授权
+
     }
-    qDebug()<<"recResult   "<<recResult;
+        break;
+    case BACK_CHANGE_USER_NAME:{    //修改登录用户名
+
+    }
+        break;
+    case BACK_READ_REGISTER:{   //寄存器读操作
+        bool flag = _verify_recv_data(BACK_READ_REGISTER,recv_data_params);
+        if(!flag) break;
+        QList<_register_read_data>  list;
+        list = _parse_register_read_data(recv_data_params); //每种类型操作定义单独一个函数，因为类型不同，返回帧数据格式不同
+        _update_interface(list);
+    }
+        break;
+    case BACK_WRITE_REGISTER:{  //寄存器写操作
+
+    }
+        break;
+    case BACK_GET_FILE_LIST:{   //获取文件列表
+
+    }
+        break;
+    case BACK_WRITE_FILE_INFO:{ //发送写文件信息
+
+    }
+        break;
+    case BACK_WRITE_FILE_DATA:{ //发送写文件数据
+
+    }
+        break;
+    default:{
+        qDebug()<<"应答码错误";
+    }
+    }
+
+    //1.解析收到的Udp“数据参描述”
+//    switch (commod_code)
+//    {
+//    case Command::GET_SERIAL_PORT_PARAMS:{
+//        QByteArray effective_plain;
+//        effective_plain.append(0x04);
+//        effective_plain.append(0xFF);
+//        effective_plain.append(_uint16ToQByteArray(0x1008));
+//        effective_plain.append(_uint16ToQByteArray(0x1009));
+//        effective_plain.append(_uint16ToQByteArray(0x100a));
+//        send_crypt_frame = data_frame.getSendUdpDatagram(effective_plain);  //返回完整的发送帧
+//    }
+//        break;
+//    case Command::SET_SERIAL_PORT_PARAMS:
+//    case Command::GET_AR502_SIDE_PARAMS:
+//    case Command::SET_AR502_SIDE_PARAMS:
+//    case Command::GET_X9_SIDE_PARAMS:
+//    case Command::SET_X9_SIDE_PARAMS:
+//    case Command::GET_COMMON_REGISTER_DATA:
+//    case Command::ASYNC_LC502_TIME:
+//    case Command::RESET_LC502_TIME:
+//    case Command::RESTORE_LC502_FACTORY_SETTING:
+//    case Command::CLEAR_LC502_DATA:
+//    case Command::GET_CHANNEL_DATA:
+//    case Command::SET_CHANNEL_1_LIGHTING:
+//    case Command::GET_CHANNEL_1_FEEDBACK:
+//    case Command::SET_CHANNEL_2_LIGHTING:
+//    case Command::GET_CHANNEL_2_FEEDBACK:
+//    case Command::GET_LC502_REGISTER:
+//    case Command::SET_DO_1_SWITCH:
+//    case Command::GET_DO_1_FEEDBACK:
+//    case Command::SET_DO_2_SWITCH:
+//    case Command::GET_DO_2_FEEDBACK:
+//    default:
+//        qDebug()<<"command code is not exist.";
+//        is_right_command = false;
+//        break;
+//    }
+
+
+
+
+    //2.完成UI刷新（或弹窗）
+
+
     //ui->label_test_udp_rec->setText(recResult);
+
+    //3.关闭线程，释放资源
     _StopUdpThread();
 }
 using namespace sansi::protocol;
 void MainWindow::on_button_rs485_query_clicked()
 {
+    _StartUdpThread();
     _WriteData(Command::GET_SERIAL_PORT_PARAMS);
     _SetControlsEnabled(false);
 }

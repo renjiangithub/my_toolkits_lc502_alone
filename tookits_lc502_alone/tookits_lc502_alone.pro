@@ -33,7 +33,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mystruct.cpp \
-    temp.cpp \
     udpclient.cpp \
     udpthread.cpp
 HEADERS += \
@@ -49,7 +48,6 @@ HEADERS += \
     lc502controller.h \
     mainwindow.h \
     mystruct.h \
-    temp.h \
     udpclient.h \
     udpthread.h
 

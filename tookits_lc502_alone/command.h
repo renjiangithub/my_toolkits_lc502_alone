@@ -32,7 +32,22 @@ namespace sansi{
             SET_DO_2_SWITCH = 21,
             GET_DO_2_FEEDBACK = 22
         };
-
+        enum Operation {
+            TO_AUTHORIZE = 1,
+            BACK_AUTHORIZE_BACK = 81,
+            TO_CHANGE_USER_NAME = 3,
+            BACK_CHANGE_USER_NAME  = 83,
+            TO_READ_REGISTER  = 4,
+            BACK_READ_REGISTER  = 84,
+            TO_WRITE_REGISTER  = 5,
+            BACK_WRITE_REGISTER  = 85,
+            TO_GET_FILE_LIST  = 6,
+            BACK_GET_FILE_LIST  = 86,
+            TO_WRITE_FILE_INFO  = 7,
+            BACK_WRITE_FILE_INFO  = 87,
+            TO_WRITE_FILE_DATA  = 8,
+            BACK_WRITE_FILE_DATA = 88
+        };
 
     }
 }

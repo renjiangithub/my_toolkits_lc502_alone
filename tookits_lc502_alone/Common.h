@@ -68,4 +68,11 @@ extern std::vector<uint8_t> CurrentTime();
 
 extern QString _AutoCompleteMac(uint64_t mac);
 
+extern QByteArray _uint16ToQByteArray(uint16_t intVar);
+
+extern QByteArray _uint8ToQByteArray(uint8_t intVar); //将uint8_t转为Qbytearray
+
+extern void _print4x4Data(QString description, unsigned char *data);
+
+
 #endif // COMMON_H

@@ -1,5 +1,6 @@
 #include "Common.h"
 #include <cast/cast.h>
+#include <QDebug>
 
 void hex_string_to_bytes(std::string &hex_str, uint8_t *data)
 {
@@ -78,4 +79,46 @@ QString _AutoCompleteMac(uint64_t mac)
         mac_addr.insert(0,'0');
     }
     return mac_addr.toUpper();
+}
+
+QByteArray _uint16ToQByteArray(uint16_t intVar)
+{
+    QByteArray array;
+    int len_intVar = sizeof(intVar);
+    array.resize(len_intVar);
+    memcpy(array.data(), &intVar, len_intVar);
+    QByteArray result;
+    result.append(array.mid(1,1)).append(array.mid(0,1));
+    return result;
+}
+
+void _print4x4Data(QString description, unsigned char *data)
+{
+    QVector<QVector<unsigned char>> result;
+    for(int i=0; i<16; ){
+        if(i%4==0){
+            QVector<unsigned char> vec;
+            for(int j=0; j<4; j++)
+                vec.push_back(data[i+j]);
+            i+=4;
+            result.push_back(vec);
+        }
+    }
+    qDebug()<<description;
+    for(int i=0; i<4; i++){
+        qDebug()<<result[i][0]<<", "<<result[i][1]<<", "<<result[i][2]<<", "<<result[i][3];
+    }
+}
+
+QByteArray _uint8ToQByteArray(uint8_t intVar)
+{
+
+    QByteArray array;
+    int len_intVar = sizeof(intVar);
+    array.resize(len_intVar);
+    memcpy(array.data(), &intVar, len_intVar);
+    QByteArray result;
+    result.append(array.mid(0,1));
+    //    qDebug()<<result;
+    return result;
 }
